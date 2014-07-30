@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_legalnotices" type="id">refs.xml</item>
+    <item name="locinfo" type="id">strings.xml</item>
+    <item name="connection_status" type="id">Activity_Maps.xml</item>
+    <item name="app_status" type="id">Activity_Maps.xml</item>
+    <item name="pause_value" type="id">Activity_Maps.xml</item>
+    <item name="send_interval_value" type="id">Activity_Maps.xml</item>
+    <item name="testing_activity_indicator" type="id">Activity_Maps.xml</item>
+</resources>
