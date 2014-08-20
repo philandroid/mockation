@@ -2,11 +2,8 @@
 
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/listViewForAddresses"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:layout_width="fill_parent"
-    android:orientation="vertical">
-
-
-
-
+    android:orientation="vertical"
+    >
 </ListView>

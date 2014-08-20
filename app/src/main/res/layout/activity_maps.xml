@@ -1,13 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/searchContainer"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -16,24 +17,42 @@
     <RelativeLayout
         android:id="@+id/searchContainer"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:layout_below="@+id/map">
-        <EditText
-            android:id="@+id/inputSearchField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/insert_address"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"/>
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
 
         <Button
+            android:id="@+id/showDatabase"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/Database"
+            android:layout_alignParentLeft="true"
+            android:onClick="showDatabase"/>
+
+        <EditText
+            android:id="@+id/inputSearchField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/insert_address"
+            android:layout_toRightOf="@+id/showDatabase"
+            android:layout_toLeftOf="@+id/performSearchButton"/>
+
+        <Button
+            android:id="@+id/performSearchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/locate_address"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:onClick="performSearch"/>
+
+
     </RelativeLayout>
-</LinearLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        />
+
+</RelativeLayout>
 

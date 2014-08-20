@@ -20,7 +20,7 @@
     <string name="pause_interval_not_positive">Pause interval must be higher than 0</string>
     <string name="send_entry_empty">No value supplied for send interval</string>
     <string name="send_interval_not_positive">Send interval must be higher than 0</string>
-    <string name="insert_address">Please insert address here</string>
+    <string name="insert_address">Insert address</string>
     <string name="locate_address">Search</string>
-
+    <string name="Database">Database</string>
 </resources>

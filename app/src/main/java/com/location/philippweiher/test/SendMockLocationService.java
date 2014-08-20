@@ -35,25 +35,13 @@ import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallback
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationClient;
 
-/**
- * A Service that injects test Location objects into the Location Services back-end. All other
- * apps that are connected to Location Services will see the test location values instead of
- * real values, until the test is over.
- *
- * To use this service, define the mock location values you want to use in the class
- * MockLocationConstants.java, then call this Service with startService().
- */
+
 public class SendMockLocationService extends Service implements
         ConnectionCallbacks, OnConnectionFailedListener {
 
     private double latitude;
     private double longitude;
 
-    /**
-     * Convenience class for passing test parameters from the Intent received in onStartCommand()
-     * via a Message to the Handler. The object makes it possible to pass the parameters through the
-     * predefined Message field Message.obj.
-     */
     private class TestParam {
 
         public final String TestAction;
@@ -68,115 +56,67 @@ public class SendMockLocationService extends Service implements
         }
     }
 
-    // Object that connects the app to Location Services
     LocationClient mLocationClient;
 
-    // A background thread for the work tasks
     HandlerThread mWorkThread;
 
-    // Indicates if the test run has started
     private boolean mTestStarted;
 
-    /*
-     * Stores an instance of the local broadcast manager. A local
-     * broadcast manager ensures security, because broadcast intents are
-     * limited to the current app.
-     */
     private LocalBroadcastManager mLocalBroadcastManager;
 
-    // Stores an instance of the object that dispatches work requests to the worker thread
     private Looper mUpdateLooper;
 
-    // The Handler instance that does the actual work
     private UpdateHandler mUpdateHandler;
 
-    // The time to wait before starting to inject the test locations
     private int mPauseInterval;
 
-    // The time to wait between each test injection
     private int mInjectionInterval;
 
     private String mTestRequest;
 
-    /**
-     * Define a class that manages the work of injecting test locations, using the Android
-     * Handler API. A Handler facilitates running the work on a separate thread, so that the test
-     * loop doesn't block the UI thread.
-     *
-     * A Handler is an object that can run code on a thread. Handler methods allow you to associate
-     * the object with a Looper, which dispatches Message objects to the Handler code. In turn,
-     * Message objects contain data and instructions for the Handler's code. A Handler is
-     * created with a default thread and default Looper, but you can inject the Looper from another
-     * thread if you want. This is often done to associate a Handler with a HandlerThread thread
-     * that runs in the background.
-     */
-
     public class UpdateHandler extends Handler {
 
-        /**
-         * Create a new Handler that uses the thread of the HandlerThread that contains the
-         * provided Looper object.
-         *
-         * @param inputLooper The Looper object of a HandlerThread.
-         */
+
         public UpdateHandler(Looper inputLooper) {
-            // Instantiate the Handler with a Looper connected to a background thread
+
             super(inputLooper);
 
         }
 
-        /*
-         * Do the work. The Handler's Looper dispatches a Message to handleMessage(), which then
-         * runs the code it contains on the thread associated with the Looper. The Message object
-         * allows external callers to pass data to handleMessage().
-         *
-         * handleMessage() assumes that the location client already has a connection to Location
-         * Services.
-         */
         @Override
         public void handleMessage(Message msg) {
-            // Create a new Location to inject into Location Services
+
             Location mockLocation = new Location(MapsActivity.LOCATION_PROVIDER);
 
-            // Time values to put into the mock Location
             long elapsedTimeNanos;
             long currentTime;
 
             int pauseInterval = 1;
             int injectionInterval = 10;
 
-            // Flag that a test has started
             mTestStarted = true;
 
-            // Start mock location mode in Location Services
             mLocationClient.setMockMode(true);
 
-            /*
-             * Wait to allow the test to switch to the app under test, by putting the thread
-             * to sleep.
-             */
+
             try {
                 Thread.sleep((long) (pauseInterval * 1000));
             } catch (InterruptedException e) {
                 return;
             }
 
-            // Get the device uptime and the current clock time
             elapsedTimeNanos = SystemClock.elapsedRealtimeNanos();
             currentTime = System.currentTimeMillis();
 
             mockLocation.setElapsedRealtimeNanos(elapsedTimeNanos);
             mockLocation.setTime(currentTime);
 
-            // Set the location accuracy, latitude, and longitude
             mockLocation.setAccuracy(3.0f);
             mockLocation.setLatitude(latitude);
             mockLocation.setLongitude(longitude);
 
-            // Inject the test location into Location Services
             mLocationClient.setMockLocation(mockLocation);
 
-            // Wait for the requested update interval, by putting the thread to sleep
             try {
                 Thread.sleep((long) (injectionInterval * 1000));
             } catch (InterruptedException e) {
